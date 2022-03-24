@@ -33,8 +33,7 @@ func (s *Safe[T]) UnmarshalJSON(bytes []byte) error {
 				continue
 			}
 
-			n := strings.ToLower(f.Name)
-
+			n := ""
 			if tag, ok := f.Tag.Lookup("json"); ok {
 				if tag == "-" {
 					continue
@@ -46,7 +45,9 @@ func (s *Safe[T]) UnmarshalJSON(bytes []byte) error {
 					}
 				}
 			}
-
+			if len(n) < 1 {
+				n = strings.ToLower(f.Name)
+			}
 			delete(deposit, n)
 		}
 	}
